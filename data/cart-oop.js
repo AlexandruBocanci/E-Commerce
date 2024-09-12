@@ -4,7 +4,7 @@ function Cart(localStorageKey) {
   
     // shortcut for  loadFromStorage:function()
     loadFromStorage() {
-      // we use 'this' instead of the object name (cart)
+      // we use 'this' instead of the object name (Cart)
       this.cartItems = JSON.parse(localStorage.getItem(localStorageKey));
     
       if (!this.cartItems) {
