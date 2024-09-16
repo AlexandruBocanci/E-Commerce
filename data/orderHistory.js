@@ -1,0 +1,82 @@
+import { orders } from "./orders.js";
+import { getProduct, loadProductsFetch } from "./products.js";
+import { formatCurrency } from '../scripts/utils/money.js';
+
+export async function orderHistory(orders) {
+  await loadProductsFetch();
+
+  let allOrdersHTML = '';
+
+  orders.forEach(order => {
+    let productsHTML = '';
+
+    const orderDate = new Date(order.orderTime);
+    const day = orderDate.toLocaleDateString('en-GB', { day: 'numeric' });
+    const month = orderDate.toLocaleDateString('en-GB', { month: 'long' });
+
+    order.products.forEach(product => {
+      const productID = product.productId;
+      const matchingProduct = getProduct(productID);
+
+      if (matchingProduct) {
+        productsHTML += `
+          <div class="product-image-container">
+            <img src="${matchingProduct.image}" alt="${matchingProduct.name}">
+          </div>
+          <div class="product-details">
+            <div class="product-name">${matchingProduct.name}</div>
+            <div class="product-delivery-date">
+              Arriving on: August 15
+            </div>
+            <div class="product-quantity">
+              Quantity: ${product.quantity}
+            </div>
+            <button class="buy-again-button button-primary">
+              <img class="buy-again-icon" src="images/icons/buy-again.png" alt="Buy it again">
+              <span class="buy-again-message">Buy it again</span>
+            </button>
+          </div>
+          <div class="product-actions">
+            <a href="tracking.html">
+              <button class="track-package-button button-secondary">
+                Track package
+              </button>
+            </a>
+          </div>
+        `;
+      } else {
+        console.log(`Product not found: ${productID}`);
+      }
+    });
+
+    const orderHistoryHTML = `
+      <div class="order-container">
+        <div class="order-header">
+          <div class="order-header-left-section">
+            <div class="order-date">
+              <div class="order-header-label">Order Placed:</div>
+              <div>${month} ${day}</div>
+            </div>
+            <div class="order-total">
+              <div class="order-header-label">Total:</div>
+              <div>$${formatCurrency(order.totalCostCents)}</div>
+            </div>
+          </div>
+          <div class="order-header-right-section">
+            <div class="order-header-label">Order ID:</div>
+            <div>${order.id}</div>
+          </div>
+        </div>
+        <div class="order-details-grid">
+          ${productsHTML} <!-- Se va adăuga aici produsele -->
+        </div>
+      </div>
+    `;
+
+    allOrdersHTML += orderHistoryHTML;
+  });
+
+  document.querySelector('.js-order-grid').innerHTML = allOrdersHTML;
+}
+
+orderHistory(orders);
