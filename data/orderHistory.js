@@ -1,6 +1,7 @@
 import { orders } from "./orders.js";
 import { getProduct, loadProductsFetch } from "./products.js";
 import { formatCurrency } from '../scripts/utils/money.js';
+import { addToCart } from "./cart.js";
 
 export async function orderHistory(orders) {
   await loadProductsFetch();
@@ -33,7 +34,7 @@ export async function orderHistory(orders) {
             </div>
             <button class="buy-again-button button-primary">
               <img class="buy-again-icon" src="images/icons/buy-again.png" alt="Buy it again">
-              <span class="buy-again-message">Buy it again</span>
+              <span class="buy-again-message" data-product-id="${product.productId}">Buy it again</span>
             </button>
           </div>
           <div class="product-actions">
@@ -77,6 +78,14 @@ export async function orderHistory(orders) {
   });
 
   document.querySelector('.js-order-grid').innerHTML = allOrdersHTML;
+
+  // Event listener for adding products to the cart
+  document.addEventListener('click', function(event) {
+    if (event.target.matches('.buy-again-message')) {
+      const productId = event.target.getAttribute('data-product-id');
+      addToCart(productId);
+    }
+  });
 }
 
 orderHistory(orders);
