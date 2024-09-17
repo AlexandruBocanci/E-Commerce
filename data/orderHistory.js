@@ -38,7 +38,7 @@ export async function orderHistory(orders) {
             </button>
           </div>
           <div class="product-actions">
-            <a href="tracking.html">
+            <a href="tracking.html?orderId=${order.id}&productId=${productID}">
               <button class="track-package-button button-secondary">
                 Track package
               </button>
@@ -69,7 +69,7 @@ export async function orderHistory(orders) {
           </div>
         </div>
         <div class="order-details-grid">
-          ${productsHTML} <!-- Se va adăuga aici produsele -->
+          ${productsHTML}
         </div>
       </div>
     `;
@@ -79,7 +79,6 @@ export async function orderHistory(orders) {
 
   document.querySelector('.js-order-grid').innerHTML = allOrdersHTML;
 
-  // Event listener for adding products to the cart
   document.addEventListener('click', function(event) {
     if (event.target.matches('.buy-again-message')) {
       const productId = event.target.getAttribute('data-product-id');

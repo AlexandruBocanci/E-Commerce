@@ -28,6 +28,8 @@ export function renderOrderSummary() {
         'dddd, MMMM D'
       );
 
+      localStorage.setItem(`deliveryDate-${productId}`, dateString);
+
       cartSummaryHTML += `
         <div class="cart-item-container  
         js-cart-item-container 
