@@ -1,7 +1,7 @@
 import { orders } from "./orders.js";
 import { getProduct, loadProductsFetch } from "./products.js";
 import { formatCurrency } from '../scripts/utils/money.js';
-import { addToCart } from "./cart.js";
+import { addToCart, cart } from "./cart.js";
 
 export async function orderHistory(orders) {
   await loadProductsFetch();
@@ -88,3 +88,14 @@ export async function orderHistory(orders) {
 }
 
 orderHistory(orders);
+updateCartQuantity();
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+
+      cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+      });
+
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}

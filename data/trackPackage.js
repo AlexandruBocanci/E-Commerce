@@ -1,5 +1,6 @@
 import { orders } from './orders.js';
 import { getProduct, loadProductsFetch } from './products.js';
+import { cart } from './cart.js'
 
 await loadProductsFetch();
 
@@ -69,3 +70,14 @@ const trackingHTML = `
 `;
 
 document.querySelector('.js-order-tracking').innerHTML = trackingHTML;
+updateCartQuantity();
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+
+      cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+      });
+
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
