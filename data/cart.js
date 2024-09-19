@@ -10,7 +10,7 @@ export function loadFromStorage() {
   }
 }
 
-function saveToStorage() {
+export function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart))
 }
 
